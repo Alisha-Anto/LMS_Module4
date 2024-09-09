@@ -1,16 +1,17 @@
 package com.ust.module4.ass1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class ToDoListApp {
+public class ToDoListAppArray {
 
-	private static List<String> taskList = new ArrayList<>();
+	private static String[] taskArray = new String[10];
 	private static int taskCount = 0;
-	static Scanner scanner = new Scanner(System.in);
+
 	public static void main(String[] args) {
-		
+		Scanner scanner = new Scanner(System.in);
 		int choice;
 
 		do {
@@ -25,15 +26,13 @@ public class ToDoListApp {
 
 			switch (choice) {
 			case 1:
-				System.out.print("Enter task Name: ");
-				String task = scanner.nextLine();
-				addTask(task);
+				addTask(scanner);
 				break;
 			case 2:
 				viewTasks();
 				break;
 			case 3:
-				removeTask();
+				removeTask(scanner);
 				break;
 			case 4:
 				System.out.println("Exiting...");
@@ -46,48 +45,50 @@ public class ToDoListApp {
 		scanner.close();
 	}
 
-	public static String addTask(String task) {
-
+	private static void addTask(Scanner scanner) {
 		
-		if (taskList.contains(task)) {
-			System.err.println("Task already exists... Sorry");
-		} else {
-			taskList.add(task);
-			taskCount++;
-			System.out.println("Task added successfully.");
+		System.out.print("Enter task Name: ");
+		String task = scanner.nextLine();
+		
+		for (int i = 0; i < taskArray.length; i++) {
+			if (taskArray[i] == null) {
+				taskArray[i] = task;
+				break;
+			}
 		}
-		return "Task added successfully.";
+		
+		taskCount++;
+		System.out.println("Task added successfully.");
 	}
 
-	public static List<String> viewTasks() {
+	private static void viewTasks() {
 		if (taskCount == 0) {
 			System.out.println("No tasks in the list.");
-			return null;
+			return;
 		}
-
+		
 		System.out.println("\n--- Your Tasks ---");
-		for (String task : taskList) {
+		for (String task : taskArray) {
+			if(task!= null)
 			System.out.println(task);
-
+			
 		}
-		return taskList;
+
 	}
 
-	public static String removeTask() {
+	private static void removeTask(Scanner scanner) {
 		if (taskCount == 0) {
 			System.out.println("No tasks to remove.");
-			return null;
+			return;
 		}
 		System.out.print("Enter task name to remove: ");
 		String removeTask = scanner.nextLine();
-		if (taskList.contains(removeTask)) {
-			taskList.remove(removeTask);
-			System.out.println("Task removed successfully.");
-			taskCount--;
-		} else {
-			System.err.println("Task not Valid");
+		for (int i = 0; i < taskArray.length; i++) {
+			if(removeTask.equals(taskArray[i])) {
+				taskArray[i]=null;
+				System.out.println(removeTask+" Removed Successfully");
+			}
 		}
-		return "Task removed successfully.";
 
 	}
 }

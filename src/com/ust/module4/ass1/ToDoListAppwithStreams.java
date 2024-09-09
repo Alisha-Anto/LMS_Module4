@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ToDoListApp {
+public class ToDoListAppwithStreams {
 
 	private static List<String> taskList = new ArrayList<>();
 	private static int taskCount = 0;
-	static Scanner scanner = new Scanner(System.in);
+
 	public static void main(String[] args) {
-		
+		Scanner scanner = new Scanner(System.in);
 		int choice;
 
 		do {
@@ -25,15 +25,13 @@ public class ToDoListApp {
 
 			switch (choice) {
 			case 1:
-				System.out.print("Enter task Name: ");
-				String task = scanner.nextLine();
-				addTask(task);
+				addTask(scanner);
 				break;
 			case 2:
 				viewTasks();
 				break;
 			case 3:
-				removeTask();
+				removeTask(scanner);
 				break;
 			case 4:
 				System.out.println("Exiting...");
@@ -46,9 +44,10 @@ public class ToDoListApp {
 		scanner.close();
 	}
 
-	public static String addTask(String task) {
+	private static void addTask(Scanner scanner) {
 
-		
+		System.out.print("Enter task Name: ");
+		String task = scanner.nextLine();
 		if (taskList.contains(task)) {
 			System.err.println("Task already exists... Sorry");
 		} else {
@@ -56,27 +55,22 @@ public class ToDoListApp {
 			taskCount++;
 			System.out.println("Task added successfully.");
 		}
-		return "Task added successfully.";
 	}
 
-	public static List<String> viewTasks() {
+	private static void viewTasks() {
 		if (taskCount == 0) {
 			System.out.println("No tasks in the list.");
-			return null;
+			return;
 		}
 
 		System.out.println("\n--- Your Tasks ---");
-		for (String task : taskList) {
-			System.out.println(task);
-
-		}
-		return taskList;
+		taskList.stream().forEach(System.out::println);
 	}
 
-	public static String removeTask() {
+	private static void removeTask(Scanner scanner) {
 		if (taskCount == 0) {
 			System.out.println("No tasks to remove.");
-			return null;
+			return;
 		}
 		System.out.print("Enter task name to remove: ");
 		String removeTask = scanner.nextLine();
@@ -87,7 +81,6 @@ public class ToDoListApp {
 		} else {
 			System.err.println("Task not Valid");
 		}
-		return "Task removed successfully.";
 
 	}
 }
